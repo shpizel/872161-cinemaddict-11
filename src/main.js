@@ -181,9 +181,8 @@ const getMainFilmsSectionHTML = () => `<section class="films">
 const getMainHTML = () => `${getMainMenuHTML()}\n${getMainFilmsSectionHTML()}`;
 render(getMainHTML(), mainNode);
 
-/**
- * Footer
- */
+/* Footer */
+
 const footerNode = document.querySelector(`footer`);
 
 const getFooterLogoHTML = () => `<section class="footer__logo logo logo--smaller">Cinemaddict</section>`;
@@ -197,6 +196,7 @@ render(getFooterHTML(), footerNode);
 /**
  * Popup
  */
+
 const getFilmDetailsPopupHTML = () => `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
