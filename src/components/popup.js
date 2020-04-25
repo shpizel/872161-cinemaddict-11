@@ -57,7 +57,7 @@ export const getFilmDetailsPopupHTML = (film) => `<section class="film-details">
           </table>
 
           <p class="film-details__film-description">
-            ${film.description}
+            ${film.description.length > 139 ? `${film.description.slice(0, 139)}…` : film.description }
           </p>
         </div>
       </div>

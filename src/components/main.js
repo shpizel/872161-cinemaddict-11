@@ -1,5 +1,3 @@
-import {getRandomChoice, removeNode} from "./utils";
-
 const getMainNavigationHTML = (items) => `<nav class="main-navigation">
   <div class="main-navigation__items">${items.map((item) => {
     return `<a href="${item.href}" class="main-navigation__item${item.active ? ` main-navigation__item--active` : ``}">${item.anchor}${item.count ? ` <span class="main-navigation__item-count">${item.count}</span>` : ``}</a>`;
@@ -27,7 +25,7 @@ export const getFilmCardHTML = (film) => `<article class="film-card">
     <span class="film-card__genre">${film.genre}</span>
   </p>
   <img src="./images/posters/${film.poster}" alt="" class="film-card__poster">
-  <p class="film-card__description">${film.description}</p>
+  <p class="film-card__description">${film.description.length > 139 ? `${film.description.slice(0, 139)}…` : film.description }</p>
   <a class="film-card__comments">${film.comments.length} comments</a>
   <form class="film-card__controls">
     <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
@@ -37,10 +35,6 @@ export const getFilmCardHTML = (film) => `<article class="film-card">
 </article>`;
 
 const getShowmoreButtonHTML = () => `<button class="films-list__show-more">Show more</button>`;
-
-// const hideShowmoreButton = () => {
-//   document.querySelectorAll(`.films-list__show-more`).forEach((el) => removeNode(el));
-// };
 
 const getMainFilmsSectionHTML = () => `<section class="films">
   <section class="films-list">
