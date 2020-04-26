@@ -1,9 +1,9 @@
+import {getRandomNumber} from "./utils";
+
 const getFooterLogoHTML = () => `<section class="footer__logo logo logo--smaller">Cinemaddict</section>`;
 
-const getFooterStatisticsHTML = () => `<section class="footer__statistics">
-  <p>130 291 movies inside</p>
+const getFooterStatisticsHTML = (moviesCount = getRandomNumber(1, 100)) => `<section class="footer__statistics">
+  <p>${moviesCount} movies inside</p>
 </section>`;
 
-const getFooterHTML = () => `${getFooterLogoHTML()}\n${getFooterStatisticsHTML()}`;
-
-export {getFooterHTML};
+export const getFooterHTML = () => `${getFooterLogoHTML()}\n${getFooterStatisticsHTML()}`;
