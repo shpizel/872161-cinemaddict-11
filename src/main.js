@@ -58,13 +58,24 @@ const prepareFilmCard = (film) => {
   filmCard.setFavouriteMarkerHadler(() => false);
   filmCard.setWatchedMarkerHadler(() => false);
   filmCard.setWatchlistAdderHandler(() => false);
+  const filmPopup = new FilmPopup(filmCard._film);
   filmCard.setClickHandler(() => {
-    const filmPopup = new FilmPopup(filmCard._film);
-    filmPopup.setCloseHandler(() => {
-      remove(filmPopup);
-    });
-    render(footerNode, filmPopup);
+    filmPopup.setCloseHandler(closePopup);
+    render(document.body, filmPopup);
+    document.addEventListener(`keydown`, documentKeydownHandler);
   });
+
+  const closePopup = () => {
+    remove(filmPopup);
+    document.removeEventListener(documentKeydownHandler);
+  };
+
+  const documentKeydownHandler = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      closePopup();
+    }
+  };
+
   return filmCard;
 };
 
