@@ -1,4 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
+import {remove, render} from "../utils/render";
 
 export const getFilmPopupTemplate = (film) => {
   return (
@@ -70,10 +71,10 @@ export const getFilmPopupTemplate = (film) => {
             <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" ${film.isAddedToWatchlist ? `checked` : ``} name="watchlist">
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" ${film.isMarkAsWatched ? `checked` : ``} name="watched">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" ${film.isMarkedAsWatched ? `checked` : ``} name="watched">
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" ${film.isMarkAsFavorite ? `checked` : ``} name="favorite">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" ${film.isMarkedAsFavorite ? `checked` : ``} name="favorite">
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
@@ -141,8 +142,56 @@ export default class FilmPopup extends AbstractComponent {
     this._film = film;
   }
 
+  display() {
+    const closePopupHandler = () => {
+      remove(this);
+      document.removeEventListener(`keydown`, documentKeydownHandler);
+    };
+
+    const documentKeydownHandler = (evt) => {
+      if (evt.key === `Escape` || evt.key === `Esc`) {
+        closePopupHandler();
+      }
+    };
+
+    this.setCloseHandler(closePopupHandler);
+    this.setFavouriteMarkerHadler();
+    this.setWatchedMarkerHadler();
+    this.setWatchlistAdderHandler();
+
+    render(document.body, this);
+    document.addEventListener(`keydown`, documentKeydownHandler);
+  }
+
   getTemplate() {
     return getFilmPopupTemplate(this._film);
+  }
+
+  setWatchlistAdderHandler() {
+    const addToWatchlistNode = this.getElement().querySelector(`input#watchlist`);
+    addToWatchlistNode.addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+
+      this._film.isAddedToWatchlist = evt.target.checked;
+    });
+  }
+
+  setWatchedMarkerHadler() {
+    const markAsWatchedBtn = this.getElement().querySelector(`input#watched`);
+    markAsWatchedBtn.addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+
+      this._film.isMarkedAsWatched = evt.target.checked;
+    });
+  }
+
+  setFavouriteMarkerHadler() {
+    const markAsFavouriteBtn = this.getElement().querySelector(`input#favorite`);
+    markAsFavouriteBtn.addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+
+      this._film.isMarkedAsFavorite = evt.target.checked;
+    });
   }
 
   setCloseHandler(hander) {

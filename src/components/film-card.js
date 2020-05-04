@@ -2,8 +2,8 @@ import AbstractComponent from "./abstract-component.js";
 
 const getFilmTemplate = (film) => {
   const addedToWatchlistClass = film.isAddedToWatchlist ? `film-card__controls-item--active` : ``;
-  const markAsWatchedClass = film.isMarkAsWatched ? `film-card__controls-item--active` : ``;
-  const markAsFavoriteClass = film.isMarkAsFavorite ? `film-card__controls-item--active` : ``;
+  const markedAsWatchedClass = film.isMarkedAsWatched ? `film-card__controls-item--active` : ``;
+  const markedAsFavoriteClass = film.isMarkedAsFavorite ? `film-card__controls-item--active` : ``;
 
   return (
     `<article class="film-card">
@@ -19,8 +19,8 @@ const getFilmTemplate = (film) => {
       <a class="film-card__comments">${film.comments.length} comments</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${addedToWatchlistClass}">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${markAsWatchedClass}">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite ${markAsFavoriteClass}">Mark as favorite</button>
+        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${markedAsWatchedClass}">Mark as watched</button>
+        <button class="film-card__controls-item button film-card__controls-item--favorite ${markedAsFavoriteClass}">Mark as favorite</button>
       </form>
       </article>`
   );
@@ -52,7 +52,7 @@ export default class FilmCard extends AbstractComponent {
     markAsWatchedBtn.addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
-      this._film.isMarkAsWatched = !this._film.isMarkAsWatched;
+      this._film.isMarkedAsWatched = !this._film.isMarkedAsWatched;
 
       handler(`watched`);
     });
@@ -63,7 +63,7 @@ export default class FilmCard extends AbstractComponent {
     markAsFavouriteBtn.addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
-      this._film.isMarkAsFavorite = !this._film.isMarkAsFavorite;
+      this._film.isMarkedAsFavorite = !this._film.isMarkedAsFavorite;
 
       handler(`favourite`);
     });

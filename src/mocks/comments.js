@@ -20,6 +20,5 @@ export const getRandomComments = (count) => {
   for (let i = 0; i < count; i++) {
     comments.push(getRandomComment());
   }
-
   return comments;
 };
