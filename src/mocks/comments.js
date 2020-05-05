@@ -1,7 +1,7 @@
-import {getRandomChoice, getRandomNumber} from "../components/utils";
-import {descriptions} from "./descriptions";
+import {getRandomChoice, getRandomNumber} from "../utils/common";
+import {DescriptionList} from "../utils/consts";
 
-const emotions = [
+const EmotionsList = [
   `smile`,
   `sleeping`,
   `puke`,
@@ -9,8 +9,8 @@ const emotions = [
 ];
 
 const getRandomComment = () => ({
-  text: getRandomChoice(descriptions),
-  emotion: getRandomChoice(emotions),
+  text: getRandomChoice(DescriptionList),
+  emotion: getRandomChoice(EmotionsList),
   author: getRandomChoice([`A`, `B`, `C`]),
   date: `${getRandomNumber(1, 3)} hours ago`,
 });
