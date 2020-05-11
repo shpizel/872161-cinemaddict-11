@@ -1,4 +1,4 @@
-import {getRandomChoice, getRandomNumber} from './utils/common';
+import {getRandomNumber} from './utils/common';
 import {render, remove} from "./utils/render";
 import FilmCard from './components/film-card';
 import FooterStats from './components/footer-stats';
@@ -12,15 +12,22 @@ import Menu from "./components/menu";
 import PrimaryFilmsSection from "./components/primary-films-section";
 import ExtraFilmsSection from "./components/extra-films-section";
 import FilmsSection from "./components/films-section";
-import LoadingMessage from "./components/loading-message";
-import NoMoviesMessage from "./components/no-movies-message";
+import Message from "./components/message";
 import {generateStats} from "./mocks/stats";
 
-const FILMS_COUNT = 5;
+const [FILMS_COUNT_MIN, FILMS_COUNT_MAX] = [15, 20];
+const FILMS_PORTION_COUNT = 5;
+const EXTRA_SECTIONS = [`Top rated`, `Most commented`];
 const EXTRA_FILMS_COUNT = 2;
 
+const Messages = {
+  LOADING_MESSAGE: `Loading...`,
+  NO_MOVIES_MESSAGE: `There are no movies in our database`,
+};
+
 const isEmpty = getRandomNumber(0, 3) === 0;
-let films = isEmpty ? [] : new Array(getRandomNumber(15, 20)).fill(0).map(getRandomFilm);
+const films = isEmpty ? [] : new Array(getRandomNumber(FILMS_COUNT_MIN, FILMS_COUNT_MAX)).fill(0).map(getRandomFilm);
+const filmsStats = generateStats(films);
 
 const headerNode = document.querySelector(`.header`);
 const randomProfile = getRandomProfile();
@@ -29,7 +36,7 @@ const userProfile = new UserProfile(randomProfile);
 render(headerNode, userProfile);
 
 const mainNode = document.querySelector(`.main`);
-const menu = new Menu(generateStats(films));
+const menu = new Menu(filmsStats);
 
 menu.setFilterChangeHandler((filterType) => filterType); // mock
 menu.setStatsHandler(() => true); // mock
@@ -44,16 +51,13 @@ const filmsSection = new FilmsSection();
 const primaryFilmsSection = new PrimaryFilmsSection();
 
 render(mainNode, filmsSection);
-const loadingMessage = new LoadingMessage(`Loading...`);
+const loadingMessage = new Message(Messages.LOADING_MESSAGE);
 render(filmsSection.getElement(), loadingMessage);
 
 const footerNode = document.querySelector(`.footer`);
 render(footerNode, new FooterStats(films.length));
 
 const prepareFilmCard = (film) => {
-  if (!film) {
-    return null;
-  }
   const filmCard = new FilmCard(film);
   filmCard.setFavouriteMarkerHadler(() => false);
   filmCard.setWatchedMarkerHadler(() => false);
@@ -65,57 +69,40 @@ const prepareFilmCard = (film) => {
   return filmCard;
 };
 
-const popRandomFilm = () => {
-  const randomFilm = getRandomChoice(films);
-  if (!randomFilm) {
-    return null;
+const loadMoreButton = new LoadMoreButton();
+
+let cursor = 0;
+const showPortion = () => {
+  if (cursor + FILMS_PORTION_COUNT >= films.length) {
+    remove(loadMoreButton);
   }
-  films = films.filter((film) => film !== randomFilm);
-  return randomFilm;
+  films.slice(cursor, cursor + FILMS_PORTION_COUNT).forEach((film) => {
+    const filmCard = prepareFilmCard(film);
+    render(primaryFilmsSection.getContainer(), filmCard);
+  });
+  cursor += FILMS_PORTION_COUNT;
 };
 
 setTimeout(() => {
   remove(loadingMessage);
-
   if (films.length > 0) {
-    for (let i = 0; i < FILMS_COUNT; i++) {
-      const filmCard = prepareFilmCard(popRandomFilm());
-      if (!filmCard) {
-        remove(loadMoreButton);
-        break;
-      }
-      render(primaryFilmsSection.getContainer(), filmCard);
-    }
-
-    render(filmsSection.getElement(), primaryFilmsSection);
-    const loadMoreButton = new LoadMoreButton();
-    render(primaryFilmsSection.getElement(), loadMoreButton);
+    showPortion();
     loadMoreButton.setClickHandler((evt) => {
       evt.preventDefault();
-      for (let i = 0; i < FILMS_COUNT; i++) {
-        const filmCard = prepareFilmCard(popRandomFilm());
-        if (!filmCard) {
-          remove(loadMoreButton);
-          break;
-        }
-        render(primaryFilmsSection.getContainer(), filmCard);
-      }
+      showPortion();
     });
+    render(primaryFilmsSection.getElement(), loadMoreButton);
+    render(filmsSection.getElement(), primaryFilmsSection);
 
-    const topRatedSection = new ExtraFilmsSection(`Top rated`);
-    for (let i = 0; i < EXTRA_FILMS_COUNT; i++) {
-      const filmCard = prepareFilmCard(getRandomFilm());
-      render(topRatedSection.getContainer(), filmCard);
-    }
-    render(filmsSection.getElement(), topRatedSection);
-
-    const mostCommentedSection = new ExtraFilmsSection(`Most commented`);
-    for (let i = 0; i < EXTRA_FILMS_COUNT; i++) {
-      const filmCard = prepareFilmCard(getRandomFilm());
-      render(mostCommentedSection.getContainer(), filmCard);
-    }
-    render(filmsSection.getElement(), mostCommentedSection);
+    EXTRA_SECTIONS.forEach((section) => {
+      const extraSection = new ExtraFilmsSection(section);
+      for (let i = 0; i < EXTRA_FILMS_COUNT; i++) {
+        const filmCard = prepareFilmCard(getRandomFilm());
+        render(extraSection.getContainer(), filmCard);
+      }
+      render(filmsSection.getElement(), extraSection);
+    });
   } else {
-    render(filmsSection.getElement(), new NoMoviesMessage());
+    render(filmsSection.getElement(), new Message(Messages.NO_MOVIES_MESSAGE));
   }
 }, getRandomNumber(250, 750));
