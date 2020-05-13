@@ -2,7 +2,7 @@ import AbstractComponent from "./abstract-component";
 
 const LINK_ACTIVE_CLASS_NAME = `sort__button--active`;
 
-const SortType = {
+export const SortType = {
   DEFAULT: `default`,
   BY_DATE: `date`,
   BY_RATING: `rating`,

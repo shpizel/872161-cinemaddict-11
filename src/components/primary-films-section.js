@@ -6,7 +6,7 @@ const getMoviesSectionTemplate = () => {
   return (
     `<section class="films-list">
        <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
-       <div class="${FILMS_CONTAINER_CLASSNAME}"></div>
+       <div class="${FILMS_CONTAINER_CLASSNAME} visually-hidden"></div>
      </section>`
   );
 };
