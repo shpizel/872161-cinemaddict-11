@@ -6,7 +6,7 @@ import {getRandomFilm} from "./mocks/film";
 import UserProfile from "./components/user-profile";
 import Menu from "./components/menu";
 import {generateStats} from "./mocks/stats";
-import PageController from "./controllers/page";
+import PageController from "./controllers/page-controller";
 
 const [FILMS_COUNT_MIN, FILMS_COUNT_MAX] = [15, 20];
 const FILMS_COUNT = getRandomNumber(FILMS_COUNT_MIN, FILMS_COUNT_MAX);

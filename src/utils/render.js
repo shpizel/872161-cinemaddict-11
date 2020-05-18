@@ -34,8 +34,11 @@ export const replace = (newComponent, oldComponent) => {
     parentElement.replaceChild(newElement, oldElement);
   }
 };
+export const replaceNew = (parent, newElement, oldElement) => parent.replaceChild(newElement, oldElement);
 
 export const remove = (component) => {
   component.getElement().remove();
   component.removeElement();
 };
+
+export const appendChild = (component) => document.body.appendChild(component.getElement());

@@ -28,3 +28,8 @@ export const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+export const getRandomDate = () => {
+  const threeMonthMillis = 86400 * 28 * 3 * 1000;
+  const tenYearsMillis = 86400 * 28 * 12 * 10 * 1000;
+  return new Date(new Date().getTime() - getRandomNumber(threeMonthMillis, tenYearsMillis));
+};

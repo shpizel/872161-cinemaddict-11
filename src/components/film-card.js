@@ -30,47 +30,40 @@ export default class FilmCard extends AbstractComponent {
   constructor(film) {
     super();
     this._film = film;
-    this._clickHandler = null;
   }
+
   getTemplate() {
     return getFilmTemplate(this._film);
   }
 
-  setWatchlistAdderHandler(handler) {
+  setWatchlistAdderClickHandler(handler) {
     const addToWatchlistNode = this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`);
     addToWatchlistNode.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-
       this._film.isAddedToWatchlist = !this._film.isAddedToWatchlist;
-
-      handler(`watchlist`);
+      handler(this._film);
     });
   }
 
-  setWatchedMarkerHadler(handler) {
+  setWatchedMarkerClickHadler(handler) {
     const markAsWatchedBtn = this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`);
     markAsWatchedBtn.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-
       this._film.isMarkedAsWatched = !this._film.isMarkedAsWatched;
-
-      handler(`watched`);
+      handler(this._film);
     });
   }
 
-  setFavouriteMarkerHadler(handler) {
+  setFavouriteMarkerClickHadler(handler) {
     const markAsFavouriteBtn = this.getElement().querySelector(`.film-card__controls-item--favorite`);
     markAsFavouriteBtn.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-
       this._film.isMarkedAsFavorite = !this._film.isMarkedAsFavorite;
-
-      handler(`favourite`);
+      handler(this._film);
     });
   }
 
   setClickHandler(handler) {
-    this._clickHandler = handler;
     const commentsNode = this.getElement().querySelector(`.film-card__comments`);
     const posterNode = this.getElement().querySelector(`.film-card__poster`);
     commentsNode.addEventListener(`click`, handler);

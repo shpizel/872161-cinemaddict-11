@@ -1,18 +1,11 @@
-import {getRandomChoice, getRandomNumber} from "../utils/common";
-import {FILM_DESCRIPTIONS} from "./consts";
-
-const EmotionsList = [
-  `smile`,
-  `sleeping`,
-  `puke`,
-  `angry`
-];
+import {getRandomChoice, getRandomDate} from "../utils/common";
+import {FILM_DESCRIPTIONS, EMOTIONS} from "./consts";
 
 const getRandomComment = () => ({
   text: getRandomChoice(FILM_DESCRIPTIONS),
-  emotion: getRandomChoice(EmotionsList),
-  author: getRandomChoice([`A`, `B`, `C`]),
-  date: `${getRandomNumber(1, 3)} hours ago`,
+  emotion: getRandomChoice(EMOTIONS),
+  author: getRandomChoice([`Igor`, `Vasya`, `Petya`, `Kolya`, `Lida`]),
+  date: getRandomDate(),
 });
 
 export const getRandomComments = (count) => {

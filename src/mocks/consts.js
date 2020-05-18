@@ -102,3 +102,10 @@ export const FILM_GENRES = [
   `Fantasy`,
   `Science fiction`
 ];
+
+export const EMOTIONS = [
+  `smile`,
+  `sleeping`,
+  `puke`,
+  `angry`
+];
